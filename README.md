@@ -1,6 +1,6 @@
 # Dreamscape Developer Kit agent skills
 
-Agent skills (Claude Code / Agent Skills `SKILL.md` format) for building and shipping **Dreamscape Learn VR
+Agent skills for **Claude Code** and **OpenAI Codex** (Agent Skills `SKILL.md` format) for building and shipping **Dreamscape Learn VR
 experiences on the Dreamscape Developer Kit (DDK) 1.1.9788.20016**: Unity 6000.3.2f1 projects built from the
 `com.dreamscape-learn.*` packages.
 
@@ -17,7 +17,7 @@ around them. Every step is tagged **V** (verified by running a real build or pla
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`dreamscape-ddk`](skills/dreamscape-ddk/SKILL.md) | model-invoked | 7-step pipeline: doctor -> project -> personalise -> agent scripts + vendor patches -> compile gate -> builds -> run and verify. Eight references cover environment, build, runtime config, architecture, networking, avatars/seats, experience authoring, XR/pod services. |
-| [`dreamscape-ddk-re`](skills/dreamscape-ddk-re/SKILL.md) | user-invoked (`/dreamscape-ddk-re`) | Unpacks and indexes a new DDK installer release, diffs it against the previous version, and refreshes `dreamscape-ddk`. |
+| [`dreamscape-ddk-re`](skills/dreamscape-ddk-re/SKILL.md) | user-invoked: `/dreamscape-ddk-re` (Claude Code), `$dreamscape-ddk-re` (Codex) | Unpacks and indexes a new DDK installer release, diffs it against the previous version, and refreshes `dreamscape-ddk`. |
 
 Both skills work in **Claude Code** and **Codex**. In Codex, `dreamscape-ddk` triggers on its own and
 `dreamscape-ddk-re` is explicit-only (`agents/openai.yaml`): invoke it as `$dreamscape-ddk-re`.
@@ -82,8 +82,12 @@ git clone https://github.com/ChristianGrubbs/dreamscape-ddk-skills && ./dreamsca
 Copy or link each skill folder into your agent's skills directory, for example:
 
 ```powershell
+# Claude Code
 New-Item -ItemType Junction -Path "$HOME\.claude\skills\dreamscape-ddk"    -Target "<clone>\skills\dreamscape-ddk"
 New-Item -ItemType Junction -Path "$HOME\.claude\skills\dreamscape-ddk-re" -Target "<clone>\skills\dreamscape-ddk-re"
+# Codex
+New-Item -ItemType Junction -Path "$HOME\.agents\skills\dreamscape-ddk"    -Target "<clone>\skills\dreamscape-ddk"
+New-Item -ItemType Junction -Path "$HOME\.agents\skills\dreamscape-ddk-re" -Target "<clone>\skills\dreamscape-ddk-re"
 ```
 
 Then run the doctor:
