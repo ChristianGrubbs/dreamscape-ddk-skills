@@ -1,0 +1,30 @@
+{
+  "package": "com.dreamscape-learn.application-architecture.environment-management",
+  "version": "1.2.10",
+  "files": [
+    {
+      "file": "Runtime/Resolvers/EnvironmentVariableResolver.cs",
+      "id": "F-29",
+      "hunks": [
+        {
+          "find": "        {\n            IDictionary envVars = Environment.GetEnvironmentVariables();",
+          "replace": "        {\n            // DDK patch (F-29): IL2CPP surfaces empty-valued variables as null and Initialize can run twice on this\n            // static dictionary; tolerate both instead of throwing and taking the whole variable system down.\n            IDictionary envVars = Environment.GetEnvironmentVariables();"
+        },
+        {
+          "find": "                _environmentVariables.Add(entry.Key.ToString(), entry.Value.ToString());",
+          "replace": "                if (entry.Key == null)\n                {\n                    continue;\n                }\n\n                _environmentVariables[entry.Key.ToString()] = entry.Value?.ToString() ?? string.Empty;"
+        }
+      ]
+    },
+    {
+      "file": "Runtime/Resolvers/ExecutableArgumentsResolver.cs",
+      "id": "RC-01",
+      "hunks": [
+        {
+          "find": "                    _executableArguments.Add(key, args[i + 1]);",
+          "replace": "                    // DDK patch (RC-01): a repeated CLI key used to throw and disable every variable; last value wins.\n                    _executableArguments[key] = args[i + 1];"
+        }
+      ]
+    }
+  ]
+}

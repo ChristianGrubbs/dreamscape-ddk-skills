@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+*.log
+*.jsonl
+.DS_Store
+Thumbs.db
+# Never commit vendor material: installers, extracted packages, decompiled code, builds, Unity projects.
+*.exe
+*.msi
+*.wixpdb
+*.tgz
+*.tar.gz
+*.apk
+*.dll
+DDK-Tarballs/
+Library/
+Packages/com.dreamscape-learn.*/
+_re/
+_re2-verify/
