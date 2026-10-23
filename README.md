@@ -4,8 +4,8 @@ Agent skills (Claude Code / Agent Skills `SKILL.md` format) for building and shi
 experiences on the Dreamscape Developer Kit (DDK) 1.1.9788.20016**: Unity 6000.3.2f1 projects built from the
 `com.dreamscape-learn.*` packages.
 
-The vendor installer, templates and tooling have many defects. These skills are the reverse-engineered **working
-path**. Every step is tagged **V** (verified by running a real build or player), **O** (observed in vendor code) or
+The vendor installer, templates and tooling have many defects. These skills document a tested **working path**
+around them. Every step is tagged **V** (verified by running a real build or player), **O** (observed in vendor code) or
 **I** (inferred), and every defect has an ID and a workaround.
 
 > Unofficial. Not affiliated with, endorsed by, or supported by Dreamscape Learn. "Dreamscape", "Dreamscape Learn"
@@ -17,7 +17,7 @@ path**. Every step is tagged **V** (verified by running a real build or player),
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`dreamscape-ddk`](skills/dreamscape-ddk/SKILL.md) | model-invoked | 7-step pipeline: doctor -> project -> personalise -> agent scripts + vendor patches -> compile gate -> builds -> run and verify. Eight references cover environment, build, runtime config, architecture, networking, avatars/seats, experience authoring, XR/pod services. |
-| [`dreamscape-ddk-re`](skills/dreamscape-ddk-re/SKILL.md) | user-invoked (`/dreamscape-ddk-re`) | Re-runs the extraction and reverse-engineering pipeline on a new DDK installer, diffs it against the previous version, and refreshes `dreamscape-ddk`. |
+| [`dreamscape-ddk-re`](skills/dreamscape-ddk-re/SKILL.md) | user-invoked (`/dreamscape-ddk-re`) | Unpacks and indexes a new DDK installer release, diffs it against the previous version, and refreshes `dreamscape-ddk`. |
 
 ## Verified on Windows 11 with Unity 6000.3.2f1
 
