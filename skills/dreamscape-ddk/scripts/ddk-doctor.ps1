@@ -2,6 +2,7 @@
 # Exit 0 = every REQUIRED check passed; 1 = at least one REQUIRED check failed. Optional checks only warn.
 # Usage: powershell -NoProfile -ExecutionPolicy Bypass -File ddk-doctor.ps1 [-UnityVersion 6000.3.2f1] [-Changeset a9779f353c9b]
 #          [-TarballDir <dir>] [-TemplateDir <dir>] [-Json] [-LogFile <path.jsonl>]
+# Without -TarballDir/-TemplateDir it uses %USERPROFILE%\.dreamscape-ddk\config.env (written by setup-wizard.sh) when present.
 # Log: one JSONL record per check plus a result record, appended to -LogFile (default %TEMP%\ddk-doctor.jsonl).
 param(
     [string] $UnityVersion = '6000.3.2f1',
@@ -12,6 +13,14 @@ param(
     [string] $LogFile = (Join-Path $env:TEMP 'ddk-doctor.jsonl')
 )
 $ErrorActionPreference = 'Continue'
+# Defaults written by setup-wizard.sh (%USERPROFILE%\.dreamscape-ddk\config.env) apply when a parameter is not passed.
+$cfgFile = Join-Path $env:USERPROFILE '.dreamscape-ddk\config.env'
+$cfg = @{}
+if (Test-Path -LiteralPath $cfgFile) {
+    foreach ($l in Get-Content -LiteralPath $cfgFile -Encoding UTF8) { if ($l -match "^([A-Z0-9_]+)='(.*)'$") { $cfg[$matches[1]] = $matches[2].Replace("'\''", "'") } }
+}
+if (-not $PSBoundParameters.ContainsKey('TarballDir') -and $cfg['DDK_TARBALL_DIR']) { $TarballDir = $cfg['DDK_TARBALL_DIR'] }
+if (-not $PSBoundParameters.ContainsKey('TemplateDir') -and $cfg['DDK_TEMPLATE_DIR']) { $TemplateDir = $cfg['DDK_TEMPLATE_DIR'] }
 $runId = [guid]::NewGuid().ToString('N').Substring(0, 8)
 $utf8 = New-Object System.Text.UTF8Encoding $false
 function Write-Event([string]$level, [string]$evt, $ctx) {
@@ -31,6 +40,7 @@ Add-Check 'unity-cli' ([bool]$cli) $false ($(if ($cli) { $cli } else { 'not foun
 
 # 2. Editor + modules
 $editorRoot = "$env:ProgramFiles\Unity\Hub\Editor\$UnityVersion"
+if ($cfg['DDK_UNITY_EXE'] -and $cfg['DDK_UNITY_EXE'] -like "*$UnityVersion*") { $editorRoot = Split-Path (Split-Path $cfg['DDK_UNITY_EXE'] -Parent) -Parent }
 $editorExe = Join-Path $editorRoot 'Editor\Unity.exe'
 Add-Check 'unity-editor' (Test-Path -LiteralPath $editorExe) $true $editorExe "unity install $UnityVersion --changeset $Changeset --architecture x86_64 --accept-eula --yes (+ one --module per missing module below); never --resume on a first install"
 $needMods = 'windows-il2cpp', 'windows-server', 'android', 'android-sdk-ndk-tools', 'android-open-jdk-17.0.9+9'

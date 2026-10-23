@@ -21,6 +21,8 @@ Scripts live in `scripts/` next to this file; each logs JSONL. Run each step to 
 1. **Doctor.** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/ddk-doctor.ps1 [-TarballDir <dir>] [-TemplateDir <dir>]`.
    Without the official installer pass `-TarballDir <extracted Package Cache>` (and `-TemplateDir <extracted Unity Templates>`):
    the default ProgramData path fails `ddk-tarballs` (V).
+   The guided setup (`setup-wizard.sh` in the skills repo) saves `DDK_TARBALL_DIR`, `DDK_TEMPLATE_DIR` and `DDK_UNITY_EXE` to
+   `%USERPROFILE%\.dreamscape-ddk\config.env`; the doctor uses them when no folders are passed (V), and later steps can read them there.
    Done: `RESULT: ready`, exit 0, plus the manual checks in [references/environment.md](references/environment.md)
    section 1 step 2. Fix each FAIL with its printed `fix:` line; that reference also covers installer-free
    provisioning, the official installer and repair.

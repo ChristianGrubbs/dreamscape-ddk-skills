@@ -48,6 +48,24 @@ Both skills work in **Claude Code** and **Codex**. In Codex, `dreamscape-ddk` tr
 
 ## Install
 
+### Guided setup (Windows, for a fresh DDK machine)
+
+`setup-wizard.sh` walks you through a new machine in 7 short stages and runs the commands for you: the agent
+skills, the Unity CLI, Unity sign-in (in your browser) and license, Unity 6000.3.2f1 with the DDK modules, the
+VS 2022 C++ build tools and Python, the DDK packages and templates (found, or unpacked from your installer `.exe`),
+then the doctor. It asks before every install. Re-run it any time: it keeps what is already done.
+
+Run it in Git Bash (part of Git for Windows) or WSL:
+
+```bash
+git clone https://github.com/ChristianGrubbs/dreamscape-ddk-skills && ./dreamscape-ddk-skills/setup-wizard.sh
+```
+
+- It saves the editor path and the package and template folders to `%USERPROFILE%\.dreamscape-ddk\config.env`, which
+  the doctor reads. Your Unity password never passes through it; a serial you type is used once and not saved.
+- In WSL, clone onto a Windows drive (`/mnt/c/...`): Windows junctions cannot point into the WSL file system.
+- Log: `%TEMP%\dreamscape-ddk-wizard.jsonl`.
+
 ### One command (Codex and Claude Code)
 
 Windows:
