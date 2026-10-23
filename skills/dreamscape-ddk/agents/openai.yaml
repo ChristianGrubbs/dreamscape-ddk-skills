@@ -1,0 +1,7 @@
+interface:
+  display_name: "Dreamscape DDK"
+  short_description: "Build and verify Dreamscape DDK VR projects"
+  default_prompt: "Use $dreamscape-ddk to set up, build and smoke-test a Dreamscape Developer Kit project."
+
+policy:
+  allow_implicit_invocation: true

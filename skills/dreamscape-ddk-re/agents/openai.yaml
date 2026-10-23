@@ -1,0 +1,7 @@
+interface:
+  display_name: "Dreamscape DDK refresh"
+  short_description: "Index a new DDK release and refresh the skill"
+  default_prompt: "Use $dreamscape-ddk-re to unpack a new Dreamscape Developer Kit installer and diff it against the previous release."
+
+policy:
+  allow_implicit_invocation: false

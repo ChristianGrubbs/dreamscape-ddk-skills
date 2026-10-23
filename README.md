@@ -19,6 +19,9 @@ around them. Every step is tagged **V** (verified by running a real build or pla
 | [`dreamscape-ddk`](skills/dreamscape-ddk/SKILL.md) | model-invoked | 7-step pipeline: doctor -> project -> personalise -> agent scripts + vendor patches -> compile gate -> builds -> run and verify. Eight references cover environment, build, runtime config, architecture, networking, avatars/seats, experience authoring, XR/pod services. |
 | [`dreamscape-ddk-re`](skills/dreamscape-ddk-re/SKILL.md) | user-invoked (`/dreamscape-ddk-re`) | Unpacks and indexes a new DDK installer release, diffs it against the previous version, and refreshes `dreamscape-ddk`. |
 
+Both skills work in **Claude Code** and **Codex**. In Codex, `dreamscape-ddk` triggers on its own and
+`dreamscape-ddk-re` is explicit-only (`agents/openai.yaml`): invoke it as `$dreamscape-ddk-re`.
+
 ## Verified on Windows 11 with Unity 6000.3.2f1
 
 - **Project without the vendor registry:** a project generated from the Multiplayer template, with all 55 DDK packages
@@ -44,6 +47,32 @@ around them. Every step is tagged **V** (verified by running a real build or pla
 - Your own DDK installer, or a machine where it is installed (for the package tarballs and templates).
 
 ## Install
+
+### One command (Codex and Claude Code)
+
+Windows:
+
+```powershell
+git clone https://github.com/ChristianGrubbs/dreamscape-ddk-skills
+powershell -NoProfile -ExecutionPolicy Bypass -File dreamscape-ddk-skills\install.ps1
+```
+
+macOS / Linux / WSL:
+
+```bash
+git clone https://github.com/ChristianGrubbs/dreamscape-ddk-skills && ./dreamscape-ddk-skills/install.sh
+```
+
+- It installs both skills for both agents: Codex reads `~/.agents/skills/`, Claude Code reads `~/.claude/skills/`.
+  Use `-Agent codex` or `-Agent claude` (`--agent` in `install.sh`) for one agent only.
+- By default it links into the clone, so `git pull` updates the skills in place. `-Mode copy` copies instead; re-run
+  it after `git pull`.
+- It is safe to re-run. Existing folders it did not create are left alone unless you pass `-Force`, which renames them
+  to `<name>.bak-<timestamp>`. `-Uninstall` removes only what it installed.
+- Restart open Codex or Claude Code sessions, then check `/skills`. Install into `~/.agents/skills` or
+  `$CODEX_HOME/skills`, not both: Codex lists duplicates twice (the installer warns about them).
+
+### Manual install
 
 Copy or link each skill folder into your agent's skills directory, for example:
 
