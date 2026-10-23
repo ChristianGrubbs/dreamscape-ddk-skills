@@ -71,6 +71,11 @@ git clone https://github.com/ChristianGrubbs/dreamscape-ddk-skills && ./dreamsca
   to `<name>.bak-<timestamp>`. `-Uninstall` removes only what it installed.
 - Restart open Codex or Claude Code sessions, then check `/skills`. Install into `~/.agents/skills` or
   `$CODEX_HOME/skills`, not both: Codex lists duplicates twice (the installer warns about them).
+- Verified with codex-cli 0.162.1 from a fresh clone of this repo. `dreamscape-ddk` is in Codex's automatic skill
+  list and `dreamscape-ddk-re` is not, because it is explicit-only. Both load from the clone when invoked as
+  `$dreamscape-ddk` or `$dreamscape-ddk-re`.
+- Codex finds skills under your real Windows user profile, and setting `USERPROFILE` or `HOME` for a Codex session
+  does not redirect it. Use `-HomeDir` only to install into another profile folder.
 
 ### Manual install
 
